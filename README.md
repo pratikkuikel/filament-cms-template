@@ -1,1 +1,1 @@
-# Template repository for cms websites
+# Filamentphp Template cms repository for websites
