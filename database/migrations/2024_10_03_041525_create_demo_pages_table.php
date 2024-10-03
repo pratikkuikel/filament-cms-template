@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('demo_pages', function (Blueprint $table) {
             $table->id();
             $table->json('data');
             $table->timestamps();

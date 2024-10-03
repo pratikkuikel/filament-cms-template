@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PageResource\Pages;
-use App\Filament\Resources\PageResource\RelationManagers;
-use App\Models\Page;
-use Filament\Forms;
+use App\Filament\Resources\DemoPageResource\Pages;
+use App\Models\DemoPage;
+use App\Services\BlockService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Builder as ComponentsBuilder;
 use Filament\Forms\Form;
@@ -13,13 +12,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Services\BlockService;
 
-class PageResource extends Resource
+class DemoPageResource extends Resource
 {
-    protected static ?string $model = Page::class;
+    protected static ?string $model = DemoPage::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
@@ -37,7 +33,7 @@ class PageResource extends Resource
                     ->blockPickerColumns(3)
                     ->blockPickerWidth('2xl')
                     ->deleteAction(
-                        fn(Action $action) => $action->requiresConfirmation(),
+                        fn (Action $action) => $action->requiresConfirmation(),
                     )
                     ->blocks([
                         BlockService::seoBlock(),
@@ -51,7 +47,7 @@ class PageResource extends Resource
                         BlockService::ctaBlock(),
                         BlockService::contactFormBlock(),
                         BlockService::footerBlock(),
-                    ])
+                    ]),
             ]);
     }
 
@@ -84,9 +80,9 @@ class PageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route('/'),
-            'create' => Pages\CreatePage::route('/create'),
-            'edit' => Pages\EditPage::route('/{record}/edit'),
+            'index' => Pages\ListDemoPages::route('/'),
+            'create' => Pages\CreateDemoPage::route('/create'),
+            'edit' => Pages\EditDemoPage::route('/{record}/edit'),
         ];
     }
 }
