@@ -2,6 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use Override;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use App\Filament\Resources\DemoPageResource\Pages\ListDemoPages;
+use App\Filament\Resources\DemoPageResource\Pages\CreateDemoPage;
+use App\Filament\Resources\DemoPageResource\Pages\EditDemoPage;
 use App\Filament\Resources\DemoPageResource\Pages;
 use App\Models\DemoPage;
 use App\Services\BlockService;
@@ -19,6 +26,7 @@ class DemoPageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -51,6 +59,7 @@ class DemoPageResource extends Resource
             ]);
     }
 
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -61,15 +70,16 @@ class DemoPageResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
+    #[Override]
     public static function getRelations(): array
     {
         return [
@@ -77,12 +87,13 @@ class DemoPageResource extends Resource
         ];
     }
 
+    #[Override]
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDemoPages::route('/'),
-            'create' => Pages\CreateDemoPage::route('/create'),
-            'edit' => Pages\EditDemoPage::route('/{record}/edit'),
+            'index' => ListDemoPages::route('/'),
+            'create' => CreateDemoPage::route('/create'),
+            'edit' => EditDemoPage::route('/{record}/edit'),
         ];
     }
 }
