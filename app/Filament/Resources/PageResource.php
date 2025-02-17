@@ -2,27 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use Override;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use App\Filament\Resources\DemoPageResource\Pages\ListDemoPages;
-use App\Filament\Resources\DemoPageResource\Pages\CreateDemoPage;
-use App\Filament\Resources\DemoPageResource\Pages\EditDemoPage;
-use App\Filament\Resources\DemoPageResource\Pages;
-use App\Models\DemoPage;
+use App\Filament\Resources\PageResource\Pages\CreatePage;
+use App\Filament\Resources\PageResource\Pages\EditPage;
+use App\Filament\Resources\PageResource\Pages\ListPages;
+use App\Models\Page;
 use App\Services\BlockService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Builder as ComponentsBuilder;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Override;
 
-class DemoPageResource extends Resource
+class PageResource extends Resource
 {
-    protected static ?string $model = DemoPage::class;
+    protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-swatch';
 
@@ -91,9 +89,9 @@ class DemoPageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListDemoPages::route('/'),
-            'create' => CreateDemoPage::route('/create'),
-            'edit' => EditDemoPage::route('/{record}/edit'),
+            'index' => ListPages::route('/'),
+            'create' => CreatePage::route('/create'),
+            'edit' => EditPage::route('/{record}/edit'),
         ];
     }
 }

@@ -3,18 +3,30 @@
 namespace App\Services;
 
 use Filament\Forms\Components\Builder\Block;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class BlockService
 {
+    public static function blockHash()
+    {
+        return TextInput::make('block_hash')
+            ->default(Str::uuid()->toString())
+            ->readOnly()
+            ->required();
+    }
+
     public static function seoBlock(): Block
     {
         return Block::make('seo')
             ->schema([
+                self::blockHash(),
                 TextInput::make('title')
                     ->label('SEO Title')
                     ->required(),
@@ -34,15 +46,25 @@ class BlockService
     {
         return Block::make('hero')
             ->schema([
+                self::blockHash(),
                 TextInput::make('title')
                     ->label('Hero Title')
                     ->required(),
                 Textarea::make('subtitle')
                     ->label('Hero Subtitle')
                     ->required(),
-                FileUpload::make('background_image')
-                    ->label('Background Image')
-                    ->image()
+                SpatieMediaLibraryFileUpload::make('background_image')
+                    ->label('Image')
+                    ->responsiveImages()
+                    ->customProperties(fn (Get $get): array => [
+                        'block_hash' => $get('block_hash'),
+                    ])
+                    ->filterMediaUsing(
+                        fn (Collection $media, Get $get): Collection => $media->where(
+                            'custom_properties.block_hash',
+                            $get('block_hash')
+                        ),
+                    )
                     ->required(),
                 TextInput::make('button_label')
                     ->label('Button Label')
@@ -58,6 +80,7 @@ class BlockService
     {
         return Block::make('features')
             ->schema([
+                self::blockHash(),
                 TextInput::make('heading')
                     ->label('Section Heading')
                     ->required(),
@@ -72,9 +95,19 @@ class BlockService
                         Textarea::make('description')
                             ->label('Feature Description')
                             ->required(),
-                        FileUpload::make('icon')
-                            ->label('Feature Icon')
-                            ->image(),
+                        SpatieMediaLibraryFileUpload::make('icon')
+                            ->label('Image')
+                            ->responsiveImages()
+                            ->customProperties(fn (Get $get): array => [
+                                'block_hash' => $get('block_hash'),
+                            ])
+                            ->filterMediaUsing(
+                                fn (Collection $media, Get $get): Collection => $media->where(
+                                    'custom_properties.block_hash',
+                                    $get('block_hash')
+                                ),
+                            )
+                            ->required(),
                     ])
                     ->addActionLabel('Add Feature')
                     ->minItems(1)
@@ -87,9 +120,19 @@ class BlockService
     {
         return Block::make('image')
             ->schema([
-                FileUpload::make('url')
+                self::blockHash(),
+                SpatieMediaLibraryFileUpload::make('image')
                     ->label('Image')
-                    ->image()
+                    ->responsiveImages()
+                    ->customProperties(fn (Get $get): array => [
+                        'block_hash' => $get('block_hash'),
+                    ])
+                    ->filterMediaUsing(
+                        fn (Collection $media, Get $get): Collection => $media->where(
+                            'custom_properties.block_hash',
+                            $get('block_hash')
+                        ),
+                    )
                     ->required(),
                 TextInput::make('alt')
                     ->label('Alt text')
@@ -103,6 +146,7 @@ class BlockService
     {
         return Block::make('button')
             ->schema([
+                self::blockHash(),
                 TextInput::make('label')
                     ->label('Button Text')
                     ->required(),
@@ -126,6 +170,7 @@ class BlockService
     {
         return Block::make('video')
             ->schema([
+                self::blockHash(),
                 TextInput::make('url')
                     ->label('Video URL (YouTube, Vimeo)')
                     ->required(),
@@ -138,6 +183,7 @@ class BlockService
     {
         return Block::make('testimonials')
             ->schema([
+                self::blockHash(),
                 TextInput::make('heading')
                     ->label('Section Heading')
                     ->required(),
@@ -163,6 +209,7 @@ class BlockService
     {
         return Block::make('faq_section')
             ->schema([
+                self::blockHash(),
                 TextInput::make('heading')
                     ->label('Section Heading')
                     ->required(),
@@ -186,6 +233,7 @@ class BlockService
     {
         return Block::make('cta')
             ->schema([
+                self::blockHash(),
                 TextInput::make('heading')
                     ->label('CTA Heading')
                     ->required(),
@@ -206,6 +254,7 @@ class BlockService
     {
         return Block::make('contact_form')
             ->schema([
+                self::blockHash(),
                 TextInput::make('heading')
                     ->label('Form Heading')
                     ->required(),
@@ -222,6 +271,7 @@ class BlockService
     {
         return Block::make('footer')
             ->schema([
+                self::blockHash(),
                 TextInput::make('company_name')
                     ->label('Company Name')
                     ->required(),
